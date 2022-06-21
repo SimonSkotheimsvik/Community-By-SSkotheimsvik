@@ -4,6 +4,7 @@
    Created on:   	09.05.2022
    Created by:   	Simon Skotheimsvik
    Filename:     	MEM-ChangeOfComputerNames-Runbook.ps1
+   Instructions:    https://skotheimsvik.blogspot.com/2022/06/rename-computers-with-countrycode-in.html
   ===========================================================================
   
   .DESCRIPTION
