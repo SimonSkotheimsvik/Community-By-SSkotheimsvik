@@ -4,7 +4,7 @@
    Created on:   	24.06.2022
    Created by:   	Simon Skotheimsvik
    Filename:     	Win11-SetDesktopTheme.ps1
-   Info:          https://skotheimsvik.blogspot.com/
+   Info:          https://skotheimsvik.blogspot.com/2022/06/windows-11-custom-theme-with-mem.html
   ===========================================================================
   
   .DESCRIPTION
