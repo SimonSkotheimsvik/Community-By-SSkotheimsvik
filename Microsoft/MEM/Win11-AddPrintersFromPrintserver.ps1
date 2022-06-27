@@ -15,6 +15,8 @@
     Win11-AddPrintersFromPrintserver.ps1 
 #>
 
+# $Printers = (Get-Printer -ComputerName PrintServer).Name
+# $Printers = (Get-Printer -ComputerName PrintServer | Where-Object {$_.Name -like "Simon*"}).Name
 $printers = @(
     '\\printserver\printer1'
     '\\printserver\printer2'
