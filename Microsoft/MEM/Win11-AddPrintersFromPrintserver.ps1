@@ -4,7 +4,7 @@
    Created on:   	23.06.2022
    Created by:   	Simon Skotheimsvik
    Filename:     	Win11-AddPrintersFromPrintserver.ps1
-   Instructions:    https://skotheimsvik.blogspot.com/
+   Instructions:    https://skotheimsvik.blogspot.com/2022/06/install-printers-from-ad-printserver-on.html
   ===========================================================================
   
   .DESCRIPTION
@@ -20,8 +20,8 @@
 $printers = @(
     '\\printserver\printer1'
     '\\printserver\printer2'
-    '\\printserver\plotter1'
-    '\\printserver\plotter2'
+    '\\printserver\printer3'
+    '\\printserver\printer4'
 )
 
 ForEach ($printer in $printers) {
