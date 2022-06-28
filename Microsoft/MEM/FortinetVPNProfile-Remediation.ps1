@@ -9,18 +9,22 @@
   
   .DESCRIPTION
     This script will create a VPN profile
-    
+
 #>
 
-# Install VPN Profiles
-New-Item "HKLM:\SOFTWARE\Fortinet\FortiClient\Sslvpn\Tunnels\Simons VPN" -force -ea SilentlyContinue;
-New-ItemProperty -LiteralPath 'HKLM:\SOFTWARE\Fortinet\FortiClient\Sslvpn\Tunnels\Simons VPN' -Name 'Description' -Value 'Simons VPN' -PropertyType String -Force -ea SilentlyContinue;
-New-ItemProperty -LiteralPath 'HKLM:\SOFTWARE\Fortinet\FortiClient\Sslvpn\Tunnels\Simons VPN' -Name 'Server' -Value 'vpn.simon.com:443' -PropertyType String -Force -ea SilentlyContinue;
-New-ItemProperty -LiteralPath 'HKLM:\SOFTWARE\Fortinet\FortiClient\Sslvpn\Tunnels\Simons VPN' -Name 'promptusername' -Value 1 -PropertyType DWord -Force -ea SilentlyContinue;
-New-ItemProperty -LiteralPath 'HKLM:\SOFTWARE\Fortinet\FortiClient\Sslvpn\Tunnels\Simons VPN' -Name 'promptcertificate' -Value 0 -PropertyType DWord -Force -ea SilentlyContinue;
-New-ItemProperty -LiteralPath 'HKLM:\SOFTWARE\Fortinet\FortiClient\Sslvpn\Tunnels\Simons VPN' -Name 'ServerCert' -Value '1' -PropertyType String -Force -ea SilentlyContinue;
+# Defining variables for the VPN connection
+$VPNName = "Simons VPN"
+$Server = "vpn.skotheimsvik.no:443"
 
-if((Test-Path -LiteralPath "HKLM:\SOFTWARE\Fortinet\FortiClient\Sslvpn\Tunnels\Simons VPN") -ne $true) {
+# Install VPN Profiles
+New-Item "HKLM:\SOFTWARE\Fortinet\FortiClient\Sslvpn\Tunnels\$VPNName" -force -ea SilentlyContinue;
+New-ItemProperty -LiteralPath "HKLM:\SOFTWARE\Fortinet\FortiClient\Sslvpn\Tunnels\$VPNName" -Name 'Description' -Value $VPNName -PropertyType String -Force -ea SilentlyContinue;
+New-ItemProperty -LiteralPath "HKLM:\SOFTWARE\Fortinet\FortiClient\Sslvpn\Tunnels\$VPNName" -Name 'Server' -Value $Server -PropertyType String -Force -ea SilentlyContinue;
+New-ItemProperty -LiteralPath "HKLM:\SOFTWARE\Fortinet\FortiClient\Sslvpn\Tunnels\$VPNName" -Name 'promptusername' -Value 1 -PropertyType DWord -Force -ea SilentlyContinue;
+New-ItemProperty -LiteralPath "HKLM:\SOFTWARE\Fortinet\FortiClient\Sslvpn\Tunnels\$VPNName" -Name 'promptcertificate' -Value 0 -PropertyType DWord -Force -ea SilentlyContinue;
+New-ItemProperty -LiteralPath "HKLM:\SOFTWARE\Fortinet\FortiClient\Sslvpn\Tunnels\$VPNName" -Name 'ServerCert' -Value '1' -PropertyType String -Force -ea SilentlyContinue;
+
+if((Test-Path -LiteralPath "HKLM:\SOFTWARE\Fortinet\FortiClient\Sslvpn\Tunnels\$VPNName") -ne $true) {
     $exitCode = -1
 }
 else {

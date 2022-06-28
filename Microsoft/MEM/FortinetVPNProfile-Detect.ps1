@@ -9,10 +9,13 @@
   
   .DESCRIPTION
     This script will detect if VPN profile is present
-    
+
 #>
 
-if((Test-Path -LiteralPath "HKLM:\SOFTWARE\Fortinet\FortiClient\Sslvpn\Tunnels\Simons VPN") -ne $true) 
+# Defining variables for the VPN connection
+$VPNName = "Simons VPN"
+
+if((Test-Path -LiteralPath "HKLM:\SOFTWARE\Fortinet\FortiClient\Sslvpn\Tunnels\$VPNName") -ne $true) 
     {
     Write-Host "Not existing"
     Exit 1
