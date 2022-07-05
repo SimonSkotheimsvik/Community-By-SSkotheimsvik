@@ -4,7 +4,7 @@
    Created on:   	27.06.2022
    Created by:   	Simon Skotheimsvik
    Filename:     	FortinetVPNProfile-Detect.ps1
-   Instructions:    https://skotheimsvik.blogspot.com/
+   Instructions:    https://skotheimsvik.blogspot.com/2022/07/fortinet-vpn-profile-distribution-with.html
   ===========================================================================
   
   .DESCRIPTION
