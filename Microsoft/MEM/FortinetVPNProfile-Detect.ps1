@@ -15,13 +15,11 @@
 # Defining variables for the VPN connection
 $VPNName = "Simons VPN"
 
-if((Test-Path -LiteralPath "HKLM:\SOFTWARE\Fortinet\FortiClient\Sslvpn\Tunnels\$VPNName") -ne $true) 
-    {
-    Write-Host "Not existing"
-    Exit 1
-    }
-Else
-    {
-    Write-Host "OK"
-    Exit 0
-    }
+if ((Test-Path -LiteralPath "HKLM:\SOFTWARE\Fortinet\FortiClient\Sslvpn\Tunnels\$VPNName") -ne $true) {
+  Write-Host "Not existing"
+  Exit 1
+}
+Else {
+  Write-Host "OK"
+  Exit 0
+}
