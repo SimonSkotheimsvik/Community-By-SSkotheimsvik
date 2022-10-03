@@ -1,0 +1,35 @@
+[
+  {
+    "toplevel_name": "Cloud Limits"
+  }, 
+  {
+    "url": "www.google.com", 
+    "name": "Google"
+  }, 
+  {
+    "name": "Internal portals", 
+    "children": [
+		{
+		"url": "https://portal.office.com/", 
+		"name": "Microsoft Office"
+		},
+		{
+		"url": "https://tripletex.no/", 
+		"name": "Tripletex"
+		}
+    ]
+  },
+  {
+	"name": "Partner portals",
+	"children": [
+		{
+		"url": "https://partner.microsoft.com/en-us/dashboard/home",
+		"name": "Microsoft Partner Center"
+		},
+		{
+		"url": "https://learn.microsoft.com/",
+		"name": "Microsoft Learn"
+		}
+	]
+  }
+]
