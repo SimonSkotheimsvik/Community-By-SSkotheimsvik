@@ -1,8 +1,9 @@
 <#
 .SYNOPSIS
-  Script to create Azure AD License groups
+  Script to create Azure AD License groups.
 .DESCRIPTION
     Script to create Azure AD License groups for available SKUs used for assigning licenses to users in the tenant.
+    The script has a table of SKUs not managed by groups, and a table of translations to apply common abbreviations.
 .EXAMPLE
     
 .NOTES
