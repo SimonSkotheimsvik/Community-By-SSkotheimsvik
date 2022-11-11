@@ -9,7 +9,7 @@
 .NOTES
     Version:        1.0
     Author:         Simon Skotheimsvik
-    Contact:        
+    Info:           https://skotheimsvik.blogspot.com/2022/11/create-aad-licensing-groups-by-graph-api.html        
     Creation Date:  08.11.2022
     Updated:              03.11.2022
     Version history:
