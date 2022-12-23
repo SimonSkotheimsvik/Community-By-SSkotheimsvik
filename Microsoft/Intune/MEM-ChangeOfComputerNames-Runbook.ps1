@@ -4,7 +4,7 @@
    Created on:   	09.05.2022
    Created by:   	Simon Skotheimsvik
    Filename:     	MEM-ChangeOfComputerNames-Runbook.ps1
-   Instructions:    https://skotheimsvik.blogspot.com/2022/06/rename-computers-with-countrycode-in.html
+   Instructions:    https://skotheimsvik.no/rename-computers-with-countrycode-in-intune
   ===========================================================================
   
   .DESCRIPTION
@@ -24,20 +24,20 @@
 
 #>
 
-$GLOBAL:DebugPreference="Continue"
+$GLOBAL:DebugPreference = "Continue"
 
 $Countries = @{
-    Norway = "NO"
-    Vietnam = "VN"
-    Brazil = "BR"
-    Chile = "CL"
-    Croatia = "HR"
-    India = "IN"
-    Italy = "IT"
-    Poland = "PL"
-    Romania = "RO"
+    Norway    = "NO"
+    Vietnam   = "VN"
+    Brazil    = "BR"
+    Chile     = "CL"
+    Croatia   = "HR"
+    India     = "IN"
+    Italy     = "IT"
+    Poland    = "PL"
+    Romania   = "RO"
     Singapore = "SG"
-    Canada = "CA"
+    Canada    = "CA"
 }
 
 # CONNECT TO GRAPH WITH AZURE APP-REGISTRATION
@@ -48,19 +48,19 @@ $ClientSecret = Get-AutomationVariable -Name 'Computer_Rename_ClientSecret'
 # Create a hashtable for the body, the data needed for the token request
 # The variables used are explained above
 $Body = @{
-    'tenant' = $TenantId
-    'client_id' = $ClientId
-    'scope' = 'https://graph.microsoft.com/.default'
+    'tenant'        = $TenantId
+    'client_id'     = $ClientId
+    'scope'         = 'https://graph.microsoft.com/.default'
     'client_secret' = $ClientSecret
-    'grant_type' = 'client_credentials'
+    'grant_type'    = 'client_credentials'
 }
 
 # Assemble a hashtable for splatting parameters, for readability
 # The tenant id is used in the uri of the request as well as the body
 $Params = @{
-    'Uri' = "https://login.microsoftonline.com/$TenantId/oauth2/v2.0/token"
-    'Method' = 'Post'
-    'Body' = $Body
+    'Uri'         = "https://login.microsoftonline.com/$TenantId/oauth2/v2.0/token"
+    'Method'      = 'Post'
+    'Body'        = $Body
     'ContentType' = 'application/x-www-form-urlencoded'
 }
 
@@ -89,11 +89,11 @@ foreach ($CountryCode in $Countries.keys) {
     write-output "Working on country $CountryCode"
     $Country = $CountryCode
     $CountryCode = $($Countries[$Country])
-    $MaxSerialLength = (15 - $CountryCode.get_Length())-1 #Max 15 characters allowed in devicename. Calculate length of serial# part.
+    $MaxSerialLength = (15 - $CountryCode.get_Length()) - 1 #Max 15 characters allowed in devicename. Calculate length of serial# part.
     $userList = $Null
 
     # Get all users with the current country code. Use paging in order to get more than 999 which is max pr query
-    $UsersURL = 'https://graph.microsoft.com/v1.0/users?$filter=startswith(country,'''+ $Country +''')&$top=999'
+    $UsersURL = 'https://graph.microsoft.com/v1.0/users?$filter=startswith(country,''' + $Country + ''')&$top=999'
     While ($UsersURL -ne $Null) {
         $data = (Invoke-WebRequest -Headers $Headers -Uri $UsersURL -UseBasicParsing) | ConvertFrom-Json
         $userList += $data.Value
@@ -105,7 +105,7 @@ foreach ($CountryCode in $Countries.keys) {
         $upn = $User.userPrincipalName
         write-output "- Focus on user $upn"
         $DeviceList = $Null
-        $deviceURL = 'https://graph.microsoft.com/v1.0/users/'+ $User.userPrincipalName +'/managedDevices?$filter=startswith(operatingSystem,''Windows'')'
+        $deviceURL = 'https://graph.microsoft.com/v1.0/users/' + $User.userPrincipalName + '/managedDevices?$filter=startswith(operatingSystem,''Windows'')'
         $DeviceList = (Invoke-RestMethod -Uri $deviceURL -Headers $Headers).value
         $NoOfDevices = $DeviceList.Count
         write-output "- $NoOfDevices device(s) found"
@@ -119,7 +119,7 @@ foreach ($CountryCode in $Countries.keys) {
 
             # Max 15 characters allowed in devicename - Some devices have to long serialnumber
             if ($FullSerial.get_Length() -gt $MaxSerialLength) {
-                $DeviceSerial = $FullSerial.substring($FullSerial.get_Length()-$MaxSerialLength)
+                $DeviceSerial = $FullSerial.substring($FullSerial.get_Length() - $MaxSerialLength)
                 write-output "---- Serial too long - shortened!"
             }
             else {
@@ -137,7 +137,7 @@ foreach ($CountryCode in $Countries.keys) {
                 $URI = "https://graph.microsoft.com/$GraphApiVersion/$($Resource)"
 
                 $JSONPayload = @{
-                "deviceName" = $CalculatedDeviceName
+                    "deviceName" = $CalculatedDeviceName
                 }
 
                 $convertedJSONPayLoad = $JSONPayload | ConvertTo-Json
