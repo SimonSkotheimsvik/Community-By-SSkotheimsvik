@@ -1,7 +1,7 @@
 <#
   .NOTES
   ===========================================================================
-   Created on:   	27.06.2022
+   Created on:   	13.01.2023
    Created by:   	Simon Skotheimsvik
    Filename:     	OfficeIcons-Remediation.ps1
    Instructions:    https://skotheimsvik.no
