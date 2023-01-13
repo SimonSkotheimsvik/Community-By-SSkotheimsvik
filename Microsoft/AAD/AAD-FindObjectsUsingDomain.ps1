@@ -12,14 +12,14 @@
 #>
 
 # Authenticate
-Connect-MgGraph -Scopes "User.Read.All, Group.Read.All"
+$conn = Connect-MgGraph -Scopes "User.Read.All, Group.Read.All"
 Select-MgProfile -name beta
 
 # Define domain name for filtering
 $domain = "skotheimsvik.no"
 
 # Get users filtered on UPN, MAIL, IMADDRESSES and PROXYADDRESSES
-$Users = Get-MgUser -Top 2000 | Where-Object {$_.UserPrincipalName -like "*@$domain" -or $_.Mail -like "*@$domain" -or $_.ImAddresses -like "*@$domain" -or $_.ProxyAddresses -like "*@$domain"} | Select-Object Id, DisplayName, UserPrincipalName, Mail, imAddresses, 
+$Users = Get-MgUser -Top 2000 | Where-Object {$_.UserPrincipalName -like "*@$domain" -or $_.Mail -like "*@$domain" -or $_.ImAddresses -like "*@$domain" -or $_.ProxyAddresses -like "*@$domain"} | Select-Object Id, DisplayName, UserPrincipalName, Mail, imAddresses, ProxyAddresses
 $Users | measure
 $Users | Out-GridView
 
