@@ -17,7 +17,7 @@
 # Office Alternative1 - Repair
   # Start-Process "C:\Program Files\Microsoft Office 15\ClientX64\OfficeClickToRun.exe" -ArgumentList "scenario=Repair", "system=x64", "culture=en-us", "RepairType=QuickRepair", "DisplayLevel=False" -Wait 
 
-# Office Alternative2 - Recreate the Rudy Ooms way
+# Office Alternative2 - Recreate icons the Rudy Ooms way
 
 if(!(Test-Path -Path "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Word.lnk")){  
 
