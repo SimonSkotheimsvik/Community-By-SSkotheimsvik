@@ -19,11 +19,13 @@ Select-MgProfile -name beta
 $domain = "skotheimsvik.no"
 
 # Get users filtered on UPN, MAIL, IMADDRESSES and PROXYADDRESSES
-$Users = Get-MgUser -Top 2000 | Where-Object {$_.UserPrincipalName -like "*@$domain" -or $_.Mail -like "*@$domain" -or $_.ImAddresses -like "*@$domain" -or $_.ProxyAddresses -like "*@$domain"} | Select-Object Id, DisplayName, UserPrincipalName, Mail, imAddresses, ProxyAddresses
+$Users = Get-MgUser -All | Where-Object {$_.UserPrincipalName -like "*@$domain" -or $_.Mail -like "*@$domain" -or $_.ImAddresses -like "*@$domain" -or $_.ProxyAddresses -like "*@$domain"} | Select-Object Id, DisplayName, UserPrincipalName, Mail, imAddresses, ProxyAddresses
 $Users | measure
 $Users | Out-GridView
+$Users | Export-Csv -Encoding utf8 "C:\Temp\$domain-Users.csv"
 
 # Get groups filtered on MAIL
-$Groups = Get-MgGroup -All | Where-Object {$_.mail -like "*$domain"} | Select-Object Id, mail, DisplayName, Description
+$Groups = Get-MgGroup -All | Where-Object {$_.mail -like "*$domain"} | Select-Object Id, DisplayName, Description, mail
+$Groups | measure
 $Groups | Out-GridView
-
+$Groups | Export-Csv -Encoding utf8 "C:\Temp\$domain-Groups.csv"
