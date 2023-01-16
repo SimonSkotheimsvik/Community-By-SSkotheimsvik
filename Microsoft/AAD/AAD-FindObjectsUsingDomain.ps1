@@ -19,7 +19,7 @@ Select-MgProfile -name beta
 $domain = "skotheimsvik.no"
 
 # Get users filtered on UPN, MAIL, IMADDRESSES and PROXYADDRESSES
-$Users = Get-MgUser -All | Where-Object {$_.UserPrincipalName -like "*@$domain" -or $_.Mail -like "*@$domain" -or $_.ImAddresses -like "*@$domain" -or $_.ProxyAddresses -like "*@$domain"} | Select-Object Id, DisplayName, UserPrincipalName, Mail, imAddresses, ProxyAddresses
+$Users = Get-MgUser -All | Where-Object {$_.UserPrincipalName -like "*@$domain" -or $_.Mail -like "*@$domain" -or $_.ImAddresses -like "*@$domain" -or $_.ProxyAddresses -like "*@$domain"} | Select-Object Id, DisplayName, UserPrincipalName, Mail, @{Name=’ImAddresses’;Expression={[string]::join(“;”, ($_.ImAddresses))}}, @{Name=’proxyAddresses’;Expression={[string]::join(“;”, ($_.proxyAddresses))}}
 $Users | measure
 $Users | Out-GridView
 $Users | Export-Csv -Encoding utf8 "C:\Temp\$domain-Users.csv"
