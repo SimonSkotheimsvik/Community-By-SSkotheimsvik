@@ -11,6 +11,12 @@
     This script will list Shared mailboxes on Exchange on-premises
 #>
 
+$CSVFile = ".\Exchange-ListSharedMailboxes.csv"
+if (Test-Path $CSVFile) {
+    Remove-Item $CSVFile
+}
+
+
 $SharedMailboxes = Get-Mailbox -RecipientTypeDetails SharedMailbox -ResultSize Unlimited | select DisplayName,Alias,UserPrincipalName,PrimarySmtpAddress,ServerName,Database,@{Name=“EmailAddresses”;Expression={$_.EmailAddresses | Where-Object {$_.PrefixString -ceq “smtp”} | ForEach-Object {$_.SmtpAddress}}}
 
 $(Foreach ($mailbox in $SharedMailboxes){
@@ -26,6 +32,6 @@ $Permissions = Get-MailboxPermission $mailbox.UserPrincipalName | select user,ac
         Database = $mailbox.Database
         User = $Permission.user
         AccessRights = $Permission.accessrights
-        } | Select DisplayName,Alias,UserPrincipalName,PrimarySmtpAddress,ServerName,Database,User,AccessRights,EmailAddresses | Export-CSV .\Exchange-ListSharedMailboxes.csv -Encoding UTF8 -NoTypeInformation
+        } | Select DisplayName,Alias,UserPrincipalName,PrimarySmtpAddress,ServerName,Database,User,AccessRights,EmailAddresses | Export-CSV $CSVFile -Encoding UTF8 -NoTypeInformation -Append
     })
 }) 
