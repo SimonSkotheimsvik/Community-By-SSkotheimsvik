@@ -20,7 +20,7 @@ if (Test-Path $CSVFile) {
 $SharedMailboxes = Get-Mailbox -RecipientTypeDetails SharedMailbox -ResultSize Unlimited | select DisplayName,Alias,UserPrincipalName,PrimarySmtpAddress,ServerName,Database,@{Name=“EmailAddresses”;Expression={$_.EmailAddresses | Where-Object {$_.PrefixString -ceq “smtp”} | ForEach-Object {$_.SmtpAddress}}}
 
 $(Foreach ($mailbox in $SharedMailboxes){
-$Permissions = Get-MailboxPermission $mailbox.UserPrincipalName | select user,accessrights,IsInherited,Deny | where { ($_.User -notlike 'NT AUTHORITY\*') }
+$Permissions = Get-MailboxPermission $mailbox.UserPrincipalName | select user,@{Name=“accessrights”;Expression={$_.accessrights }},IsInherited,Deny | where { ($_.User -notlike 'NT AUTHORITY\*') }
     $(Foreach ($Permission in $Permissions){
         New-Object PSObject -Property @{
         DisplayName = $mailbox.DisplayName
