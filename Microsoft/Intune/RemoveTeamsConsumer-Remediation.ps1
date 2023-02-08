@@ -20,7 +20,7 @@
 #>
 
 try {
-    Get-AppxPackage -Allusers -Name MicrosoftTeams | Remove-AppxPackage -ErrorAction stop
+    Get-AppxPackage -Name MicrosoftTeams | Remove-AppxPackage -ErrorAction stop
     Write-Host "Microsoft Teams app successfully removed"
 
 }

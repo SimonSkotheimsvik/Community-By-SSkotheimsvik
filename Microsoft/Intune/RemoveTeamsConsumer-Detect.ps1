@@ -19,7 +19,7 @@
     
 #>
 
-if ($null -eq (Get-AppxPackage -Allusers -Name MicrosoftTeams)) {
+if ($null -eq (Get-AppxPackage -Name MicrosoftTeams)) {
     Write-Host "Microsoft Teams client not found"
     exit 0
 }
