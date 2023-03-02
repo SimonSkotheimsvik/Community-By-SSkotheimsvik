@@ -4,7 +4,7 @@
    Created on:   	02.03.2023
    Created by:   	Simon Skotheimsvik
    Filename:     	Win11-NetworkConfigurationOperators.ps1
-   Info:          https://skotheimsvik.blogspot.com
+   Info:          https://skotheimsvik.no
    Reference:     https://call4cloud.nl/2021/04/dude-wheres-my-admin/#changing
   ===========================================================================
   
