@@ -3,7 +3,7 @@
   ===========================================================================
    Created on:   	09.05.2022
    Created by:   	Simon Skotheimsvik
-   Filename:     	MEM-ChangeOfComputerNames-Runbook.ps1
+   Filename:     	Intune-ChangeOfComputerNames-Runbook.ps1
    Instructions:    https://skotheimsvik.no/rename-computers-with-countrycode-in-intune
   ===========================================================================
   
@@ -15,13 +15,6 @@
     modified to use other user variables as well.
 
     The script is designed to run unattended in an Azure Runbook.
-
-    Prerequisits:
-    - Az.Storage
-    
-  .EXAMPLE
-    MEM-ChangeOfComputerNames-Runbook.ps1 
-
 #>
 
 $GLOBAL:DebugPreference = "Continue"
