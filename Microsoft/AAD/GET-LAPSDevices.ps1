@@ -15,6 +15,10 @@
 
 #>
 
+#region connect
+Connect-MgGraph -Scopes "Device.Read.All", "DeviceManagementManagedDevices.Read.All", "DeviceLocalCredential.Read.All"
+#region connect
+
 #region variables
 $devices = get-mgdevice -All
 $NumberOfDevices = $devices.count
