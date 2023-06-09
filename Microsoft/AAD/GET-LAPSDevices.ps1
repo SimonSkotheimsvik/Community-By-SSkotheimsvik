@@ -20,7 +20,7 @@ Connect-MgGraph -Scopes "Device.Read.All", "DeviceManagementManagedDevices.Read.
 #region connect
 
 #region variables
-$devices = get-mgdevice -All
+$devices = get-mgdevice -Filter "OperatingSystem eq 'Windows'" -All
 $NumberOfDevices = $devices.count
 $NumberOfDevicesWithLaps = 0
 $Counter = 1
@@ -28,12 +28,12 @@ $Counter = 1
 
 #region find devices with LAPS passwords
 foreach ($device in $devices) {
-    if (Get-LapsAADPassword -DeviceIds $device.Id -erroraction 'silentlycontinue') {$NumberOfDevicesWithLaps++}
+    if (Get-LapsAADPassword -DeviceIds $device.DisplayName -erroraction 'silentlycontinue') {$NumberOfDevicesWithLaps++}
     Write-Progress -Activity "Searching device $Counter : $NumberOfDevices for LAPS" -PercentComplete (($Counter / $NumberOfDevices) * 100)
     $Counter++
 }
 #endregion 
 
 #region write result
-Write-Host "$NumberOfDevicesWithLaps of $NumberOfDevices have LAPS enabled."
+Write-Host "$NumberOfDevicesWithLaps of $NumberOfDevices Windows devices have Windows LAPS password."
 #end region
