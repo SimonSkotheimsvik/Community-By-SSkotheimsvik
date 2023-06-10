@@ -3,7 +3,6 @@
   Script to find devices with LAPS passwords.
 .DESCRIPTION
     This script will find all devices with a LAPS password set. Use this to find the prevalence of LAPS in your environment.
-.EXAMPLE
     
 .NOTES
     Version:        1.0
