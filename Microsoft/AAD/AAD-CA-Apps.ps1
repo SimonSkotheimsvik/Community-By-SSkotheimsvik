@@ -2,7 +2,7 @@
 .SYNOPSIS
   Script to register Azure Enterprise Applications.
 .DESCRIPTION
-    Script to register Azure Enterprise Applications for use in CA policies.
+    Script to register Azure Enterprise Applications for use in Azure Conditional Access policies.
 .EXAMPLE
     
 .NOTES
