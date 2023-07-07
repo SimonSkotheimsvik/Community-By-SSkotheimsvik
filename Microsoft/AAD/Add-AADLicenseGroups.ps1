@@ -80,7 +80,7 @@ foreach ($SKU in $SKUsToManage) {
     $GroupDisplayName = RenameDisplayName -DisplayName "AZ-LIC-$(($skuHashTable["$SKUpartno"]).DisplayName)"
 
     # Finds group, create it if not existing
-    if ($Group = Get-MgGroup | Where-Object { $_.DisplayName -like $GroupDisplayName }) {
+    if ($Group = Get-MgGroup -All | Where-Object { $_.DisplayName -like $GroupDisplayName }) {
         Write-Output """$GroupDisplayName"" exists"
     }
     else {
@@ -102,7 +102,7 @@ foreach ($SKU in $SKUsToManage) {
 
     #Get all users with the specified license
     Write-Output "Getting all users with the $(($skuHashTable["$SKUpartno"]).DisplayName) license"
-    $users = Get-MgUser | Where-Object { $_.AssignedLicenses.SkuId -contains $($Sku.SkuId) }
+    $users = Get-MgUser -All | Where-Object { $_.AssignedLicenses.SkuId -contains $($Sku.SkuId) }
     
     # Add users to the Azure security group
     Write-Output "Adding $($users.count) users to the $($GroupDisplayName) group"
