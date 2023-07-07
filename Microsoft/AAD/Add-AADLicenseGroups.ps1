@@ -1,19 +1,18 @@
 <#
 .SYNOPSIS
-  Script to create Azure AD License groups.
+    Script to create Azure AD License groups.
 .DESCRIPTION
     Script to create Azure AD License groups for available SKUs used for assigning licenses to users in the tenant.
     The script has a table of SKUs not managed by groups, and a table of translations to apply common abbreviations.
 .EXAMPLE
     
 .NOTES
-    Version:        1.0
+    Version:        1.1
     Author:         Simon Skotheimsvik
-    Info:           https://skotheimsvik.blogspot.com/2022/11/create-aad-licensing-groups-by-graph-api.html        
-    Creation Date:  08.11.2022
-    Updated:              03.11.2022
+    Contact:        
     Version history:
     1.0 - (08.11.2022) Script released
+    1.1 - (07.07.2023) Adding users with existing licenses to the groups
 
 #>
 
@@ -28,15 +27,19 @@ function RenameDisplayName {
     }
     $DisplayName
 }# end function
-
 #endregion functions
 
 #region Variables
-
-# Insert SKUs not manageable by groups
+# Insert SKUs not manageable by groups: Get-MgSubscribedSku | Where-Object { $_.SkuPartNumber -notin $SKUsNotToManage }
 $SKUsNotToManage = @(
     "WINDOWS_STORE"
     "RMSBASIC"
+    "MICROSOFT_REMOTE_ASSIST"
+    "AAD_PREMIUM_P2_FACULTY"
+    "Dynamics_365_Guides_vTrial"
+    "FLOW_FREE"
+    "WIN10_ENT_A5_FAC"
+    "STREAM"
 )
 
 # Insert translations used to shorten group names
@@ -60,8 +63,8 @@ $skuHashTable = @{}
 #endregion Variables
 
 #region connect
-Select-MgProfile beta
 Connect-MgGraph -Scopes "Directory.Read.All", "Group.ReadWrite.All" -ForceRefresh
+Select-MgProfile beta
 Import-Module Microsoft.Graph.Groups
 #endregion connect
 
@@ -87,7 +90,7 @@ foreach ($SKU in $SKUsToManage) {
 
     # Add license to group
     $params = @{
-        AddLicenses = @(
+        AddLicenses    = @(
             @{
                 SkuId = $Sku.SkuId
             }
@@ -96,5 +99,19 @@ foreach ($SKU in $SKUsToManage) {
         )
     }
     Set-MgGroupLicense -GroupId $Group.Id -BodyParameter $params
+
+    #Get all users with the specified license
+    Write-Output "Getting all users with the $(($skuHashTable["$SKUpartno"]).DisplayName) license"
+    $users = Get-MgUser | Where-Object { $_.AssignedLicenses.SkuId -contains $($Sku.SkuId) }
+    
+    # Add users to the Azure security group
+    Write-Output "Adding $($users.count) users to the $($GroupDisplayName) group"
+    foreach ($user in $users) {
+        $params = @{
+            "@odata.id" = "https://graph.microsoft.com/v1.0/directoryObjects/{$($user.Id)}"
+        }
+
+        New-MgGroupMemberByRef -GroupId $Group.Id -BodyParameter $params
+    }
 }
 #endregion script 
