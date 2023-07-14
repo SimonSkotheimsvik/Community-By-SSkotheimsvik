@@ -32,8 +32,8 @@ foreach ($Brand in $Branding) {
         Write-Host ($Brand.RegKeyPath) " does not exist. Will be created."
         New-Item -Path $RegKeyPath -Force | Out-Null
     }
-    IF (!(Get-Item -Path $($Brand.RegKeyPath))) {
-        Write Host $($Brand.RegKeyPath) " does not exist. Will be created."
+    IF (!(Get-Item -Path $($Brand.Key))) {
+        Write Host $($Brand.Key) " does not exist. Will be created."
         New-ItemProperty -Path $($Brand.RegKeyPath) -Name $($Brand.Key) -Value $($Brand.Value) -PropertyType STRING -Force
     }
     
