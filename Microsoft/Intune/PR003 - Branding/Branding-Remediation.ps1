@@ -3,14 +3,14 @@
   ===========================================================================
    Created on:   	11.07.2023
    Created by:   	Simon Skotheimsvik
-   Filename:     	Branding-Detection.ps1
+   Filename:     	Branding-Remediation.ps1
    Info:          https://skotheimsvik.no
   ===========================================================================
   
   .DESCRIPTION
     This script sets the support information for Windows10 and Windows 11
     The information is found in Settings - System - About - Support
-    The script can be assigned as Remediation script in Microsoft Intune
+    The script can be assigned as a Remediation script in Microsoft Intune
     
 #>
 
@@ -32,8 +32,8 @@ foreach ($Brand in $Branding) {
         Write-Host ($Brand.RegKeyPath) " does not exist. Will be created."
         New-Item -Path $RegKeyPath -Force | Out-Null
     }
-    IF (!(Get-Item -Path $($Brand.RegKeyPath))) {
-        Write Host $($Brand.RegKeyPath) " does not exist. Will be created."
+    IF (!(Get-Item -Path $($Brand.Key))) {
+        Write Host $($Brand.Key) " does not exist. Will be created."
         New-ItemProperty -Path $($Brand.RegKeyPath) -Name $($Brand.Key) -Value $($Brand.Value) -PropertyType STRING -Force
     }
     
