@@ -14,13 +14,13 @@
 
 # Install and import the Microsoft Graph module
 #Install-Module -Name Microsoft.Graph
-Import-Module Microsoft.Graph
+Import-Module Microsoft.Graph.Users
 
 # Authenticate interactively (remember to aka.ms/pim first)
 Connect-MgGraph -Scopes "User.Read.All"
 
 # Define the output CSV file path
-$csvFilePath = "c:\temp\AAD-Users-Attributes.csv"
+$csvFilePath = "c:\temp\EntraID-Users-Attributes.csv"
 
 # Retrieve all users from Azure AD using Microsoft Graph
 $users = Get-MgUser -All -Property Id, UserPrincipalName, GivenName, Surname, JobTitle, Department, CompanyName, MobilePhone, OfficeLocation, PostalCode, City, Country, UsageLocation -Expand Manager | Select-Object Id, UserPrincipalName, GivenName, Surname, JobTitle, Department, CompanyName, MobilePhone, OfficeLocation, PostalCode, City, Country, UsageLocation, @{Name='Manager'; Expression={$_.Manager.AdditionalProperties.userPrincipalName}}

@@ -13,16 +13,16 @@
 
 # Install and import the Microsoft Graph module
  #Install-Module -Name Microsoft.Graph
- Import-Module Microsoft.Graph
+ Import-Module Microsoft.Graph.Users
 
 # Authenticate interactively (remember to aka.ms/pim first)
 Connect-MgGraph -Scopes "User.ReadWrite.All"
 
 # Define the CSV file path
-$csvFilePath = "c:\temp\AAD-Users-Attributes.csv"
+$csvFilePath = "c:\temp\EntraID-Users-Attributes.csv"
 
 # Read the CSV file
-$csvUsers = Import-Csv -Path $csvFilePath
+$csvUsers = Import-Csv -Path $csvFilePath -Delimiter ";"
 
 # Attributes to check and update
 $attributesToUpdate = @("GivenName", "Surname", "JobTitle", "Department", "CompanyName", "MobilePhone", "OfficeLocation", "PostalCode", "City", "Country", "UsageLocation", "Manager", "Id")
@@ -30,6 +30,7 @@ $attributesToUpdate = @("GivenName", "Surname", "JobTitle", "Department", "Compa
 # Iterate through each user in the CSV and update Azure AD if needed
 foreach ($csvUser in $csvUsers) {
     $userPrincipalName = $csvUser.UserPrincipalName
+    write-host "Focus on $userPrincipalName"
 
     # Retrieve the Azure AD user with all necessary attributes
     $azureADUser = Get-MgUser -Filter "userPrincipalName eq '$userPrincipalName'" -Property $attributesToUpdate
@@ -81,3 +82,7 @@ foreach ($csvUser in $csvUsers) {
 
 # Display a message indicating the update is complete
 Write-Host "Userlist processing complete." -ForegroundColor Blue
+
+# https://learn.microsoft.com/en-us/answers/questions/1245345/how-can-i-prevent-getting-prompted-multiple-times
+#Disconnect-MgGraph
+#Remove-Item "$env:USERPROFILE\.graph" -Recurse -Force
