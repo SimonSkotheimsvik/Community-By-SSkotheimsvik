@@ -15,7 +15,7 @@
 #>
 
 #region connect
-Connect-MgGraph -Scopes "Device.Read.All", "DeviceManagementManagedDevices.Read.All", "DeviceLocalCredential.Read.All"
+Connect-MgGraph -Scopes "Device.Read.All", "DeviceLocalCredential.ReadBasic.All"
 #region connect
 
 #region variables
