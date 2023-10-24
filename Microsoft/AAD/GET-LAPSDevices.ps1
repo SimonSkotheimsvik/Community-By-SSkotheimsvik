@@ -5,12 +5,13 @@
     This script will find all devices with a LAPS password set. Use this to find the prevalence of LAPS in your environment.
     
 .NOTES
-    Version:        1.0
+    Version:        1.1
     Author:         Simon Skotheimsvik
     Info:           https://skotheimsvik.no        
     Creation Date:  09.06.2023
     Version history:
     1.0 - (09.06.2023) Script released
+    1.1 - (24.10.2023) Least privilege (Thanks  to Sandy Zeng)
 
 #>
 
