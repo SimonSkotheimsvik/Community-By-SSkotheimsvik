@@ -7,7 +7,7 @@
 .NOTES
     Version:        1.1
     Author:         Simon Skotheimsvik
-    Info:           https://skotheimsvik.no        
+    Info:           https://skotheimsvik.no/migrating-cloud-laps-to-the-new-windows-laps       
     Creation Date:  09.06.2023
     Version history:
     1.0 - (09.06.2023) Script released
