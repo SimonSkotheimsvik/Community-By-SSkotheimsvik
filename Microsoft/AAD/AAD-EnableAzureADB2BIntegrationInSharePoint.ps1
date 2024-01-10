@@ -1,4 +1,4 @@
-﻿<#
+<#
   .NOTES
   ===========================================================================
    Created on:   	20.10.2023
@@ -16,7 +16,7 @@
 import-module -Name Microsoft.Online.SharePoint.Powershell
 
 # Connect to your SharePoint Admin Center
-Connect-SPOService -Url https://m365x73910067-admin.sharepoint.com/
+Connect-SPOService -Url https://m365x84289014-admin.sharepoint.com/
 
 # Check current setting
 Get-SPOTenant | ft EnableAzureADB2BIntegration
