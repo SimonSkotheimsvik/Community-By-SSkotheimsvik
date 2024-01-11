@@ -7,7 +7,7 @@
     task and delete the old local cloudlaps administrator account.
     
 .NOTES
-    FileName:    Uninstall-CloudLAPS_SchTask.ps1
+    FileName:    CloudLAPS_SchTask_Uninstall.ps1
     Author:      Simon Skotheimsvik
     Contact:     @SSkotheimsvik
     Info:        https://skotheimsvik.no/migrating-cloud-laps-to-the-new-windows-laps
