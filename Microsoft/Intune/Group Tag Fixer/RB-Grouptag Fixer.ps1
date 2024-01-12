@@ -39,7 +39,7 @@ foreach ($Group in $GroupTagInfo) {
     $DevicePrefix  = $Group.DevicePrefix
     $DeviceTargetGroupTag = $Group.GroupTag
 
-    # Search all Autopilot devices starting with Prefix and has Zero Touch Device ID
+    # Search all Autopilot devices starting with Prefix and has Zero Touch Device ID (Autopilot devices)
     $Devices = Get-MgBetaDevice -Search "displayName:$DevicePrefix" -ConsistencyLevel eventual -All | Where-Object { $_.PhysicalIds -match '\[ZTDID\]' }
 
     if ($Devices.count -gt 0) {
