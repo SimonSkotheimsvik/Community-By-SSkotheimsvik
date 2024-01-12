@@ -40,7 +40,7 @@ foreach ($Group in $GroupTagInfo) {
     $DeviceTargetGroupTag = $Group.GroupTag
 
     # Search all Autopilot devices starting with Prefix and has Zero Touch Device ID
-    $Devices = Get-MgDevice -Search "displayName:$DevicePrefix" -ConsistencyLevel eventual -All | Where-Object { $_.PhysicalIds -match '\[ZTDID\]' }
+    $Devices = Get-MgBetaDevice -Search "displayName:$DevicePrefix" -ConsistencyLevel eventual -All | Where-Object { $_.PhysicalIds -match '\[ZTDID\]' }
 
     if ($Devices.count -gt 0) {
         Write-Output "$($Devices.count) devices with prefix $DevicePrefix"
@@ -66,7 +66,7 @@ foreach ($Group in $GroupTagInfo) {
                 $params = @{
                     groupTag = $DeviceTargetGroupTag
                 }
-                Update-MgDeviceManagementWindowAutopilotDeviceIdentityDeviceProperty -WindowsAutopilotDeviceIdentityId $AutopilotZTDID -BodyParameter $params
+                Update-MgBetaDeviceManagementWindowAutopilotDeviceIdentityDeviceProperty -WindowsAutopilotDeviceIdentityId $AutopilotZTDID -BodyParameter $params
             }
             else {
                 Write-Output "$($DeviceDisplayName) has grouptag ""$($DeviceGroupTag)"". No change required."
