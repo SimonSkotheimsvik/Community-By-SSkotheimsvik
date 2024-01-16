@@ -27,7 +27,7 @@ $GroupTagInfo = $csvContent | ConvertFrom-Csv -delimiter ";"
 #endregion Variables
 
 #region Authentication
-Connect-MgGraph -Identity
+Connect-MgGraph -Identity #-TenantId $TenantId
 write-output "Authentication finished"
 #endregion Authentication
 
