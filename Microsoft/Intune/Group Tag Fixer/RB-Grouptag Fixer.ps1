@@ -74,11 +74,11 @@ foreach ($Group in $GroupTagInfo) {
                 try {
                     Update-MgBetaDeviceManagementWindowsAutopilotDeviceIdentityDeviceProperty -WindowsAutopilotDeviceIdentityId $AutopilotZTDID -BodyParameter $params
                     $ReturnBodyTemp | Add-Member -MemberType NoteProperty -Name "Status" -Value "Succeed" -Force    # Add value for logging
-                    write-warning "Device $($CurrentDeviceName), Group tag set to $($DeviceTargetGroupTag)"              
+                    write-warning "Device $($DeviceDisplayName), Group tag set to $($DeviceTargetGroupTag)"              
                 }
                 catch {
                     $ReturnBodyTemp | Add-Member -MemberType NoteProperty -Name "Status" -Value "Failed" -Force    # Add value for logging
-                    write-warning "Device $($CurrentDeviceName), Failed setting Group tag to $($DeviceTargetGroupTag)"              
+                    write-warning "Device $($DeviceDisplayName), Failed setting Group tag to $($DeviceTargetGroupTag)"              
                 }
 
             }
