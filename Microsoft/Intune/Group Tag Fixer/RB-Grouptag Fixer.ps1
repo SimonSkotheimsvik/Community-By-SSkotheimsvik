@@ -4,7 +4,7 @@
     Modified on:    12.01.2024
     Created by:     Simon Skotheimsvik
     Info:           https://skotheimsvik.no
-    Version:        1.1.1
+    Version:        1.1.2
     
     .DESCRIPTION
     Automatic set Group tag on Autopilot devices based on computer name.
@@ -15,11 +15,11 @@ $TenantId = Get-AutomationVariable -Name 'aa-no-grouptag-tenantid'
 
 $csvContent = @"
 DevicePrefix;GroupTag
-SE-;Device-SE
-NO-;Device-NO
-DK-;Device-DK
-FI-;Device-FI
-DE-;Device-DE
+SE-;DeviceSE
+NO-;DeviceNO
+DK-;DeviceDK
+FI-;DeviceFI
+DE-;DeviceDE
 "@
 
 $GroupTagInfo = $csvContent | ConvertFrom-Csv -delimiter ";"
@@ -27,20 +27,18 @@ $GroupTagInfo = $csvContent | ConvertFrom-Csv -delimiter ";"
 #endregion Variables
 
 #region Authentication
-Connect-AzAccount -Identity -TenantId $TenantId
-$token = Get-AzAccessToken -ResourceUrl "https://graph.microsoft.com"
-Connect-MgGraph -AccessToken $token.Token
+Connect-MgGraph -Identity
 write-output "Authentication finished"
 #endregion Authentication
 
 #region Device traversal
 foreach ($Group in $GroupTagInfo) {
     # Get variables from CSV for current group
-    $DevicePrefix  = $Group.DevicePrefix
+    $DevicePrefix = $Group.DevicePrefix
     $DeviceTargetGroupTag = $Group.GroupTag
 
     # Search all Autopilot devices starting with Prefix and has Zero Touch Device ID (Autopilot devices)
-    $Devices = Get-MgBetaDevice -Search "displayName:$DevicePrefix" -ConsistencyLevel eventual -All | Where-Object { $_.PhysicalIds -match '\[ZTDID\]' }
+    $Devices = Get-MgBetaDevice -Filter "startsWith(displayName, '$DevicePrefix')" -ConsistencyLevel eventual -All | Where-Object { $_.PhysicalIds -match '\[ZTDID\]' }
 
     if ($Devices.count -gt 0) {
         Write-Output "$($Devices.count) devices with prefix $DevicePrefix"
@@ -66,7 +64,7 @@ foreach ($Group in $GroupTagInfo) {
                 $params = @{
                     groupTag = $DeviceTargetGroupTag
                 }
-                Update-MgBetaDeviceManagementWindowAutopilotDeviceIdentityDeviceProperty -WindowsAutopilotDeviceIdentityId $AutopilotZTDID -BodyParameter $params
+                Update-MgBetaDeviceManagementWindowsAutopilotDeviceIdentityDeviceProperty -WindowsAutopilotDeviceIdentityId $AutopilotZTDID -BodyParameter $params
             }
             else {
                 Write-Output "$($DeviceDisplayName) has grouptag ""$($DeviceGroupTag)"". No change required."
