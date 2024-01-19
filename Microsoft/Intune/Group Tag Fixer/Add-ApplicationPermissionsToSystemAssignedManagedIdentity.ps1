@@ -15,7 +15,7 @@ $ServicePrincipalId = "22222222-2222-2222-2222-222222222222"
 #endregion Variables
 
 #region Connect to Microsoft Graph
-Connect-MgGraph -TenantId $TenantID -Scopes "Application.Read.All","AppRoleAssignment.ReadWrite.All,RoleManagement.ReadWrite.Directory"
+Connect-MgGraph -TenantId $TenantID -Scopes "Application.Read.All","AppRoleAssignment.ReadWrite.All","RoleManagement.ReadWrite.Directory"
 #endregion connect
 
 #region Set Service Principal Permissions
