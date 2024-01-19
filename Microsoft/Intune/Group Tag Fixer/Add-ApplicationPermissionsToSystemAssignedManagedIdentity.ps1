@@ -1,12 +1,12 @@
 <#
     .SYNOPSIS
     Created on:     01.06.2023
-    Modified on:    02.06.2023
+    Modified on:    19.01.2024
     Created by:     CloudWay, Simon Skotheimsvik
-    Info:           CloudWay Services, Evergreen Roadmap, Group Tag Fixer
+    Info:           https://skotheimsvik.no/intune-chronicles-the-automation-secrets-of-seamless-group-tags
     
     .DESCRIPTION
-    Routine to add application persmissions to system assigned managed identity.
+    Group Tag Fixer. Routine to add application persmissions to system assigned managed identity.
 #>
 
 #region Variables
