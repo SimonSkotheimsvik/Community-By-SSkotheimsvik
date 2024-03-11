@@ -24,7 +24,6 @@ $APPIDs = @(
     "d4ebce55-015a-49b5-a083-c84d1797ae8c"  # Microsoft Intune Enrollment
     "45a330b1-b1ec-4cc1-9161-9f03992aa49f"  # Windows Store for Business
     "a4a365df-50f1-4397-bc59-1a1564b8bb9c"  # Microsoft Remote Desktop
-    "9751c96f-923d-43bd-8930-ae900037b2fa"  # MoveAdmin
 )
 #endregion Variables
 
