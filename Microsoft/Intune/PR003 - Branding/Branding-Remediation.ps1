@@ -2,9 +2,10 @@
   .NOTES
   ===========================================================================
    Created on:   	11.07.2023
+   Last updated:    16.04.2024
    Created by:   	Simon Skotheimsvik
    Filename:     	Branding-Remediation.ps1
-   Info:          https://skotheimsvik.no
+   Info:            https://skotheimsvik.no
   ===========================================================================
   
   .DESCRIPTION
@@ -32,7 +33,7 @@ foreach ($Brand in $Branding) {
         Write-Host ($Brand.RegKeyPath) " does not exist. Will be created."
         New-Item -Path $RegKeyPath -Force | Out-Null
     }
-    IF (!(Get-Item -Path $($Brand.Key))) {
+    IF ((Get-ItemProperty -Path $Brand.RegKeyPath -Name $Brand.Key -ErrorAction SilentlyContinue) -eq $null) {
         Write Host $($Brand.Key) " does not exist. Will be created."
         New-ItemProperty -Path $($Brand.RegKeyPath) -Name $($Brand.Key) -Value $($Brand.Value) -PropertyType STRING -Force
     }
