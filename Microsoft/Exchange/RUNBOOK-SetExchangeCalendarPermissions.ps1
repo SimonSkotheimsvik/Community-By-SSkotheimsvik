@@ -39,9 +39,8 @@ foreach ($user in $users) {
   
         # Updates the calendar permissions for the user  
         if ($CalenderPermissionsMyOrg.Role -ne $Permission) {
-            Write-Output "- Current MyOrg-permission set on calendar for $($user.userprincipalname) is $($CalenderPermissionsMyOrg.Role)."   
+            Write-Warning "- Changing MyOrg-permission on calendar for $($user.userprincipalname) from $($CalenderPermissionsMyOrg.Role) to $($Permission)."   
             Update-MgUserCalendarPermission -UserId $user.id -Role $Permission -CalendarPermissionId $CalenderPermissionsMyOrg.id
-            Write-Warning "- Setting MyOrg-permission on calendar for $($user.userprincipalname) to $($Permission)."   
         }  
         # If the permission is already set, print a message
         else {  
