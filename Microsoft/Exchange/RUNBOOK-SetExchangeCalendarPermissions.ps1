@@ -3,6 +3,7 @@
     Name: RUNBOOK-SetExchangeCalendarPermissions.ps1
     Author: Alexander Holmeset, https://alexholmeset.blog, https://x.com/AlexHolmeset
     Contributor: Simon Skotheimsvik, http://skotheimsvik.no, https://x.com/SSkotheimsvik
+    Instructions: https://alexholmeset.blog/2024/06/11/set-default-calendar-permission-for-your-organization-with-graph-api/
     Versions:   1.0 - 2017.10.30 - Simon Skotheimsvik, initial version using ExchangeOnline module
                 1.1 - 2024.06.12 - Alexander Holmeset, updated to use Microsoft Graph PowerShell SDK
 
