@@ -17,7 +17,7 @@ $Permission = "LimitedRead"
 # Connects to Microsoft Graph with the specified scopes  
 Connect-MgGraph -Identity
   
-# Generates a list of all users in the Microsoft 365 organization  
+# Generates a list of all licensed users in the Microsoft 365 organization with a mailbox
 $users = Get-MgUser -All -Property "id", "AssignedLicenses", "UserPrincipalName", "Mail" | Where-Object { $_.AssignedLicenses.Count -gt 0 -and $_.Mail -ne $null}
 #$users = Get-MgUser -All -Property "id", "AssignedLicenses", "UserPrincipalName", "Mail" | Where-Object { $_.AssignedLicenses.Count -gt 0 -and $_.Mail -ne $null -and $_.UserPrincipalName -eq "simon.skotheimsvik@domain.com"}
 
