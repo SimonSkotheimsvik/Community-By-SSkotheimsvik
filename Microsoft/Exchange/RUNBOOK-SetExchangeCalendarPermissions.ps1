@@ -6,6 +6,7 @@
     Instructions: https://alexholmeset.blog/2024/06/11/set-default-calendar-permission-for-your-organization-with-graph-api/
     Versions:   1.0 - 2017.10.30 - Simon Skotheimsvik, initial version using ExchangeOnline module
                 1.1 - 2024.06.12 - Alexander Holmeset, updated to use Microsoft Graph PowerShell SDK
+                1.2 - 2024.06.13 - Simon Skotheimsvik, tuned the script more towards Azure Automation.
 
     .DESCRIPTION
     This script sets the default calendar permissions for all users in a Microsoft 365 organization to LimitedRead.
