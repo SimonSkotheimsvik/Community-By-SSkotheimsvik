@@ -6,6 +6,8 @@
    Filename:     	Win11-NetworkConfigurationOperators.ps1
    Info:          https://skotheimsvik.no
    Reference:     https://call4cloud.nl/2021/04/dude-wheres-my-admin/#changing
+   Version:       1.0 - 02.03.2023 - Initial release
+                  1.1 - 19.06.2024 - Modified based on feedback on group ID and runlevel
   ===========================================================================
   
   .DESCRIPTION
@@ -22,7 +24,8 @@
 
 $content = @' 
 $loggedonuser = Get-WMIObject -class Win32_ComputerSystem | Select-Object -ExpandProperty username 
-Add-LocalGroupMember -Group "Network Configuration Operators" -Member $loggedonuser 
+$groupSID = “S-1-5-32-556”
+Add-LocalGroupMember -SID $groupSID -Member $loggedonuser 
 '@ 
  
  # create custom folder and write PS script 
@@ -37,4 +40,5 @@ Out-File -FilePath $(Join-Path $env:ProgramData CustomScripts\NetworkOperatorGro
 $Time = New-ScheduledTaskTrigger -AtLogOn 
 $User = "SYSTEM" 
 $Action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-ex bypass -file `"C:\ProgramData\CustomScripts\NetworkOperatorGroup.ps1`"" 
-Register-ScheduledTask -TaskName "AddUserToNetworkOperatorGroup" -Trigger $Time -User $User -Action $Action -Force 
+$TaskName = “AddUserToNetworkOperatorGroup”
+Register-ScheduledTask -TaskName $TaskName -Trigger $Time -User $User -Action $Action -RunLevel Highest -Force 
