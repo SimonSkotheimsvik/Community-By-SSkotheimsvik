@@ -1,0 +1,11 @@
+
+IntuneDevices 
+| where OS == "Windows"
+| summarize count() by OSVersion
+
+IntuneDevices 
+| where OS == "Windows"
+| extend OSVersionParts = split(OSVersion, ".")
+| extend OSVersionPrefix = strcat(OSVersionParts[0], ".", OSVersionParts[1], ".", OSVersionParts[2])
+| summarize count() by OSVersionPrefix
+| render columnchart 
