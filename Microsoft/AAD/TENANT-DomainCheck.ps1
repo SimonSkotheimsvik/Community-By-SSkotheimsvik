@@ -3,6 +3,7 @@
     Script to check domains in a Microsoft 365 tenant.
 .DESCRIPTION
     This script will check domains and DNS records for all domains in a Microsoft 365 tenant.
+    MX, SPF, DKIM, DMARC, Autodiscover, Skype for Business, and other records will be checked. 
 .EXAMPLE
     
 .NOTES
