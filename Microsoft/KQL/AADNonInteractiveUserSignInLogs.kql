@@ -1,0 +1,43 @@
+AADNonInteractiveUserSignInLogs
+| where TimeGenerated >= ago(30d)
+| where UserPrincipalName == "xx@yy.zz"
+| summarize Count = count() by bin(TimeGenerated, 1h), UserPrincipalName, AppDisplayName
+| order by TimeGenerated asc 
+| render barchart 
+
+AADNonInteractiveUserSignInLogs
+| where TimeGenerated >= ago(30d)
+| summarize SignInCount = count() by UserPrincipalName, AppDisplayName
+| order by SignInCount desc
+| take 50
+
+
+AADNonInteractiveUserSignInLogs
+| where TimeGenerated >= ago(30d)
+| where UserPrincipalName == "xx@yy.zz"
+| extend DeviceName = tostring (parse_json(DeviceDetail).displayName)
+| summarize DeviceCount = count() by DeviceName, AppDisplayName
+| order by DeviceCount desc 
+
+AADNonInteractiveUserSignInLogs
+| where TimeGenerated >= ago(30d)
+| where UserPrincipalName == "xx@yy.zz"
+| where AppDisplayName == "Windows Sign In"
+
+
+AADNonInteractiveUserSignInLogs
+| where TimeGenerated >= ago(30d)
+| where UserPrincipalName == "xx@yy.zz"
+| extend DeviceName = tostring (parse_json(DeviceDetail).displayName)
+| summarize DeviceCount = count() by DeviceName, AppDisplayName
+| order by DeviceCount desc 
+
+
+AADNonInteractiveUserSignInLogs
+| where TimeGenerated >= ago(30d)
+| extend DeviceName = tostring (parse_json(DeviceDetail).displayName)
+//| summarize Count = count() by AppDisplayName, DeviceName
+//| summarize Count = count() by UserPrincipalName, AppDisplayName
+| summarize Count = count() by AppDisplayName, UserPrincipalName
+| order by Count desc
+| take 20

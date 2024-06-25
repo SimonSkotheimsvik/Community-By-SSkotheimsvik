@@ -1,0 +1,24 @@
+SigninLogs
+| where TimeGenerated >= ago(90d)  // Filter logs for the last 90 days
+| mv-expand ConditionalAccessPolicy = ConditionalAccessPolicies  // Expand the ConditionalAccessPolicies array
+| where ConditionalAccessStatus <> "success"
+| where ConditionalAccessPolicy.displayName startswith "CA004"
+| where ConditionalAccessPolicy.result <> "notApplied"
+| project TimeGenerated, UserPrincipalName, UserDisplayName, DeviceDetail, AppDisplayName, ResourceDisplayName, ConditionalAccessPolicy.displayName, Status.failureReason, IPAddress, LocationDetails
+//| summarize Users = count() by UserDisplayName
+//| summarize AppDisplayName = count() by AppDisplayName
+//| summarize ResourceDisplayName = count() by ResourceDisplayName
+//| summarize IP = count() by IPAddress
+//| summarize Compliant = count() by tostring(DeviceDetail.isCompliant)
+//| render piechart 
+
+
+
+SigninLogs
+| where TimeGenerated >= ago(360d)  // Filter logs for the last 360 days
+| mv-expand ConditionalAccessPolicy = ConditionalAccessPolicies  // Expand the ConditionalAccessPolicies array
+| where ConditionalAccessStatus <> "success"
+| where ConditionalAccessPolicy.displayName startswith "CA004"
+| where ConditionalAccessPolicy.result <> "notApplied"
+| summarize IncidentCount = count() by bin(TimeGenerated, 1d), ConditionalAccessStatus
+| render timechart 

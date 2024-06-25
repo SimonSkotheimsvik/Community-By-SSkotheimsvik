@@ -8,4 +8,4 @@ IntuneDevices
 | extend OSVersionParts = split(OSVersion, ".")
 | extend OSVersionPrefix = strcat(OSVersionParts[0], ".", OSVersionParts[1], ".", OSVersionParts[2])
 | summarize count() by OSVersionPrefix
-| render columnchart 
+| render columnchart
