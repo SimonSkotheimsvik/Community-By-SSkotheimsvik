@@ -1,15 +1,13 @@
 <#
   .NOTES
-  ===========================================================================
-   Created on:   	26.06.2024
-   Created by:   	Simon Skotheimsvik
-   Filename:     	StartURLonLogon-Detection.ps1
+   Created on:    26.06.2024
+   Created by:    Simon Skotheimsvik
+   Filename:      StartURLonLogon-Remediation.ps1
    Info:          https://skotheimsvik.no 
-  ===========================================================================
+   Version:       1.0
   
   .DESCRIPTION
     This remediation package adds URL to start on logon.
-    
 #>
 
 $RegContent = @"
