@@ -7,7 +7,6 @@
     It will then retrieve the unique AaGuids for FIDO2 methods and output them in a table format with details on each user having passkeys.
 .PARAMETER None
     This script does not accept any parameters.
-
     
 .NOTES
     Author:         Simon Skotheimsvik
