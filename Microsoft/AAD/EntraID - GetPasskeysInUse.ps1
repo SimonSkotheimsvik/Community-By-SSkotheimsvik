@@ -21,7 +21,7 @@
 # Install-Module Microsoft.Graph
 
 # Connect to Microsoft Graph with the required scopes
-Connect-MgGraph -Scope AuditLog.Read.All,UserAuthenticationMethod.Read.All
+Connect-MgGraph -Scope AuditLog.Read.All, UserAuthenticationMethod.Read.All
 #endregion
 
 #region Get Users
@@ -35,6 +35,7 @@ $userIds = $users.Id
 $aaGuids = $userIds | ForEach-Object { Get-MgUserAuthenticationFido2Method -UserId $_ -All } | Select-Object -ExpandProperty AaGuid -Unique
 
 # Output the unique AaGuids
+Write-Host "Unique AaGuids for FIDO2 methods in use in Entra ID:" -ForegroundColor Green
 $aaGuids
 #endregion
 
@@ -47,16 +48,17 @@ foreach ($user in $users) {
     $fidoMethods = Get-MgUserAuthenticationFido2Method -UserId $user.Id -All
     foreach ($method in $fidoMethods) {
         $result += [PSCustomObject]@{
-            Username = $user.UserPrincipalName
-            DisplayName = $user.DisplayName
-            AaGuid = $method.AaGuid
-            Model = $method.Model
-            DislplayName = $method.DisplayName
+            Username        = $user.UserPrincipalName
+            DisplayName     = $user.DisplayName
+            AaGuid          = $method.AaGuid
+            Model           = $method.Model
+            DislplayName    = $method.DisplayName
             CreatedDateTime = $method.CreatedDateTime
         }
     }
 }
 
 # Output the results in a table format
+Write-Host "User passkey details in Entra ID:" -ForegroundColor Green
 $result | ft
 #endregion
