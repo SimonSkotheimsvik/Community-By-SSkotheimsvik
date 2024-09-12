@@ -1,5 +1,4 @@
-  .DESCRIPTION
-    <#
+ <#
     .SYNOPSIS
     This script adds a scheduled task which checks if TeamViewer is running. If TeamViewer is not running, the script starts the TeamViewer process and logs an event to the Application Log.
 
@@ -15,7 +14,7 @@
     Reference:  https://github.com/MSEndpointMgr/PSInvoker/tree/master
     Versions:
             1.0.0 - 11.09.2024 - Initial Release, Simon Skotheimsvik
-    #>
+ #>
 
 
 
