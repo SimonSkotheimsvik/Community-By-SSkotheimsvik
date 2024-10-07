@@ -7,7 +7,7 @@
    Version:       1.0.0
   
   .DESCRIPTION
-    This remediation package checks if the
+    This detection script checks if the registry key exists and holds a different value than expected.
 #>
 
 $RegContent = @"

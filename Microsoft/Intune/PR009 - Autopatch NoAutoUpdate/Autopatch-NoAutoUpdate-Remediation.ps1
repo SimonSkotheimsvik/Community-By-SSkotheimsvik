@@ -7,7 +7,7 @@
    Version:       1.0.0
   
   .DESCRIPTION
-    This remediation package deletes a registry key if it exists and holds a different value than expected.
+    This remediation script checks if the registry key exists and holds a different value than expected. If the value is different, the script will clean up the registry key.
 #>
 
 $RegContent = @"
