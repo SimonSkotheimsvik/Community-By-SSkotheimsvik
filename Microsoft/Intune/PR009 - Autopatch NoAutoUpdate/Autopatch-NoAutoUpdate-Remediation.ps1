@@ -4,56 +4,40 @@
    Created by:    Simon Skotheimsvik
    Filename:      Autopatch-NoAutoUpdate-Remediation.ps1
    Info:          https://skotheimsvik.no 
-   Version:       1.0.0
+   Version:       1.0.4
   
   .DESCRIPTION
     This remediation script checks if the registry key exists and holds a different value than expected. If the value is different, the script will clean up the registry key.
 #>
 
-$RegContent = @"
-RegKeyPath,Key,Value,Type
-"HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU","NoAutoUpdate","0","Dword"
-"@
+$RegKeyPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU"
+$RegKey = "NoAutoUpdate"
+$ExpectedValue = 0
 
-$RegData = $RegContent | ConvertFrom-Csv -delimiter ","
-
-$RemediationRequired = $false
-$ErrorOccurred = $false
-
-foreach ($Reg in $RegData) {
-    # Use Get-Item to check if the registry path exists without echoing errors
-    $Item = Get-Item -Path $($Reg.RegKeyPath) -ErrorAction SilentlyContinue
-    if ($Item) {
+try {
+    if (Test-Path -Path $RegKeyPath) {
         try {
-            # Attempt to retrieve the existing value, and if not found, return $null
-            $ExistingValue = $Item.GetValue($($Reg.Key), $null)
-            
-            # If the key exists and the value does not match the expected value, delete it
-            if ($ExistingValue -ne $null -and $ExistingValue -ne $($Reg.Value)) {
-                # Use Remove-ItemProperty to delete the mismatched key
-                Remove-ItemProperty -Path $($Reg.RegKeyPath) -Name $($Reg.Key) -ErrorAction SilentlyContinue
-                Write-Host "Deleted mismatched key: $($Reg.Key) in path $($Reg.RegKeyPath)"
-                $RemediationRequired = $true
+            $ExistingValue = Get-ItemPropertyValue -Path $RegKeyPath -Name $RegKey -ErrorAction SilentlyContinue
+            if ($ExistingValue -eq $null) {
+                Write-Host "Registry key does not exist. No remediation needed."
+                Exit 0 # No changes required
+            } elseif ($ExistingValue -ne $ExpectedValue) {
+                Set-ItemProperty -Path $RegKeyPath -Name $RegKey -Value $ExpectedValue -ErrorAction SilentlyContinue
+                Write-Host "Set key: $RegKey in path $RegKeyPath to the expected value $ExpectedValue."
+                Exit 1 # Remediation successful
+            } else {
+                Write-Host "$($RegKey) in path $($RegKeyPath) equals $($ExistingValue). No remediation needed."
+                Exit 0 # No changes required
             }
+        } catch {
+            Write-Host "$_. No remediation needed."
+            Exit 0 # No changes required
         }
-        catch {
-            # If any errors occur (e.g., permissions), handle them gracefully
-            Write-Host "Error accessing key $($Reg.Key) in path $($Reg.RegKeyPath): $_"
-            $ErrorOccurred = $true
-        }
+    } else {
+        Write-Host "Registry path does not exist. No remediation needed."
+        Exit 0 # No changes required
     }
-}
-
-# Exit with appropriate codes based on what happened
-if ($ErrorOccurred) {
-    Write-Host "Script completed with errors."
-    Exit 2 # Exit code 2 indicates an error occurred
-}
-elseif ($RemediationRequired) {
-    Write-Host "Remediation successful."
-    Exit 1 # Exit code 1 indicates remediation was needed and successfully applied
-}
-else {
-    Write-Host "No remediation needed."
-    Exit 0 # Exit code 0 indicates no changes were required
+} catch {
+    Write-Host "Error accessing registry path ${RegKeyPath}: $_"
+    Exit 1 # Error occurred
 }

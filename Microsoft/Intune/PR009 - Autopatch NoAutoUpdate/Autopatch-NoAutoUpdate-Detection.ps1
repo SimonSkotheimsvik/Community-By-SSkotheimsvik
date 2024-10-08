@@ -4,7 +4,7 @@
    Created by:    Simon Skotheimsvik
    Filename:      Autopatch-NoAutoUpdate-Detection.ps1
    Info:          https://skotheimsvik.no 
-   Version:       1.0.0
+   Version:       1.0.1
   
   .DESCRIPTION
     This detection script checks if the registry key exists and holds a different value than expected.
@@ -27,7 +27,7 @@ foreach ($Reg in $RegData) {
             if ($ExistingValue -ne $null) {
                 # Check if the existing value matches the expected value
                 if ($ExistingValue -ne $($Reg.Value)) {
-                    Write-Host $($Reg.Key) "Not Equal"
+                    Write-Host "$($Reg.Key) exist as $($ExistingValue), and is not equal to $($Reg.Value)."
                      Exit 1
                 }
                 else {
