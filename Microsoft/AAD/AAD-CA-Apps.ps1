@@ -11,9 +11,10 @@
     Info:           https://cloudway.com        
     Creation Date: 23.05.2023
     Version history:
-    1.0 - (23.05.2023) Script released
-    1.1 - (29.06.2023) Script updated with Universal Store Service APIs and Web Application
-    1.2 - (12.02.2024) Convert to Microsoft Graph PowerShell SDK V2 module, Simon Skotheimsvik
+    1.0.0 - (23.05.2023) Script released
+    1.1.0 - (29.06.2023) Script updated with Universal Store Service APIs and Web Application
+    1.2.0 - (12.02.2024) Convert to Microsoft Graph PowerShell SDK V2 module, Simon Skotheimsvik
+    1.2.1 - (11.08.2025) Added the My Staff application ID, Simon Skotheimsvik
 #>
 
 #region Variables
@@ -24,13 +25,14 @@ $APPIDs = @(
     "d4ebce55-015a-49b5-a083-c84d1797ae8c"  # Microsoft Intune Enrollment
     "45a330b1-b1ec-4cc1-9161-9f03992aa49f"  # Windows Store for Business
     "a4a365df-50f1-4397-bc59-1a1564b8bb9c"  # Microsoft Remote Desktop
+    "ba9ff945-a723-4ab5-a977-bd8c9044fe61"  # My Staff
 )
 #endregion Variables
 
 #region connect
 # disconnect-mggraph
 Connect-MgGraph -Scopes "Application.ReadWrite.All"
-Import-Module Microsoft.Graph.Applications
+Import-Module Microsoft.Graph.Beta.Applications
 #endregion connect
 
 #region script 
