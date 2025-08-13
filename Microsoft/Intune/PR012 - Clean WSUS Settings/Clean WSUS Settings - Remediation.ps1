@@ -14,13 +14,16 @@
 #>
 
 $datetime = Get-Date -Format "yyyy-MM-dd HH:mm"
-#running in remediation mode
+
 # Stop the Windows Update service
 Stop-Service -Name wuauserv -Force
+
 # Remove the registry key
 Remove-Item -Path  'HKLM:\Software\Policies\Microsoft\Windows\WindowsUpdate' -Recurse
+
 # Start the Windows Update service
 Start-Service -Name wuauserv
+
 if(test-path -Path 'HKLM:\Software\Policies\Microsoft\Windows\WindowsUpdate'){
     #registry item still exists
     Write-Error "Reg item still exists. Remediation failed at $($datetime)"

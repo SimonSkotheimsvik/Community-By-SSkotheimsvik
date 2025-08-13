@@ -14,7 +14,7 @@
 #>
 
 $datetime = Get-Date -Format "yyyy-MM-dd HH:mm"
-#running in detection mode
+
 if(test-path -Path 'HKLM:\Software\Policies\Microsoft\Windows\WindowsUpdate'){
     #registry item exists
     Write-Output "Reg item exists. Remediation required, $($datetime)"
