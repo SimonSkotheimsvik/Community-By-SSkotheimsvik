@@ -24,23 +24,26 @@ else {
 #endregion
 
 #region Connect to Microsoft Graph
-Connect-MgGraph -Scopes "DeviceManagementManagedDevices.Read.All"
+if (-not (Get-MgContext)) {
+    Connect-MgGraph -Scopes "DeviceManagementManagedDevices.Read.All"
+}
 #endregion
 
 #region Query Devices
 # Step 1: Get all Windows devices
 $allWindowsDevices = Get-MgDeviceManagementManagedDevice -Filter "operatingSystem eq 'Windows'" -All
-# Step 2: Filter locally for Entra ID joined devices
+# Step 2: Filter locally for Entra ID joined devices (can be heavy in some tenants filtering locally)
 $devices = $allWindowsDevices | Where-Object { $_.deviceEnrollmentType -eq 'windowsAzureADJoin' }
 #endregion
 
 #region Prepare output array
 $deviceReport = @()
 
-foreach ($device in $devices) {
+$deviceReport = foreach ($device in $devices) {
     $deviceId = $device.Id
 
     # Query full device object by ID
+    # Heavy to run in large environments, but had to be done to get full details
     $uri = "https://graph.microsoft.com/beta/deviceManagement/managedDevices('$deviceId')?`$select=deviceName,userPrincipalName,enrolledByUserPrincipalName"
     $details = Invoke-MgGraphRequest -Method GET -Uri $uri -OutputType PSObject
 
@@ -48,7 +51,7 @@ foreach ($device in $devices) {
     $mismatch = if ($details.userPrincipalName -ne $details.enrolledByUserPrincipalName) { "Yes" } else { "No" }
 
     # Add to report
-    $deviceReport += [PSCustomObject]@{
+    [PSCustomObject]@{
         DeviceName                  = $details.deviceName
         UserPrincipalName           = $details.userPrincipalName
         EnrolledByUserPrincipalName = $details.enrolledByUserPrincipalName
