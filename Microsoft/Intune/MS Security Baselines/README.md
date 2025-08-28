@@ -1,5 +1,5 @@
 # MS Security Baselines Exports
 
-This folder contains an export of Microsoft Security baseline policies from Intunej. These files could be helpfull as a reference when using [IntuneDiff.com](https://intunediff.com) to review Intune policies.
+This folder contains exported Microsoft Security Baseline policies from Intune. The policies were created in a tenant with default settings. These files can serve as helpful references when using [IntuneDiff.com](https://intunediff.com) to review and compare custom Intune configuration policies.
 
-The export was done using the Microsoft Edgge Developer Tools (F12), as described in the [User Guide](https://intunediff.com/user-guide) of IntuneDiff.com.
+ The export was performed using Microsoft Edge Developer Tools (F12), following the steps outlined in the [IntuneDiff.com User Guide](https://intunediff.com/user-guide).
