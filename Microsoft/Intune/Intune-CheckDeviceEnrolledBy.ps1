@@ -14,12 +14,15 @@
 #>
 
 #region prerequisites
-if (Get-Module -ListAvailable -Name Microsoft.Graph.DeviceManagement) {
-    Write-Host "Microsoft Graph Device Management Already Installed"
-} 
-else {
-    Install-Module -Name Microsoft.Graph.DeviceManagement -Scope CurrentUser -Repository PSGallery -Force -RequiredVersion 1.19.0 
-    Write-Host "Microsoft Graph Device Management Installed"
+try {
+    Import-Module Microsoft.Graph.DeviceManagement -ErrorAction Stop
+    Import-Module Microsoft.Graph.Authentication -ErrorAction Stop
+    Write-Host "Required modules imported successfully" -ForegroundColor Green
+}
+catch {
+    Write-Host "Failed to import required modules. Please install Microsoft.Graph.DeviceManagement module." -ForegroundColor Red
+    Write-Host "Run: Install-Module Microsoft.Graph.DeviceManagement -Force" -ForegroundColor Yellow
+    exit 1
 }
 #endregion
 
@@ -31,7 +34,7 @@ if (-not (Get-MgContext)) {
 
 #region Query Devices
 # Step 1: Get all Windows devices
-$allWindowsDevices = Get-MgDeviceManagementManagedDevice -Filter "operatingSystem eq 'Windows'" -All
+$allWindowsDevices = Microsoft.Graph\Get-MgDeviceManagementManagedDevice -Filter "operatingSystem eq 'Windows'" -All
 # Step 2: Filter locally for Entra ID joined devices (can be heavy in some tenants filtering locally)
 $devices = $allWindowsDevices | Where-Object { $_.deviceEnrollmentType -eq 'windowsAzureADJoin' }
 #endregion
