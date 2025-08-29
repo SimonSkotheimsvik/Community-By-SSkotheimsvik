@@ -8,7 +8,9 @@
 
 .NOTES
     Author:    Simon Skotheimsvik
-    Version:   1.0.0 - 2025.08.11 - Initial version, Simon Skotheimsvik
+    Versions:   
+                1.0.0 - 2025.08.11 - Initial version, Simon Skotheimsvik
+                1.0.1 - 2025.08.28 - Better routine for prerequisites, Simon Skotheimsvik
     Copyright: (c) 2025 Simon Skotheimsvik
     License:   MIT
 #>
