@@ -11,6 +11,7 @@
     Versions:   
                 1.0.0 - 2025.08.11 - Initial version, Simon Skotheimsvik
                 1.0.1 - 2025.08.28 - Better routine for prerequisites, Simon Skotheimsvik
+                1.0.2 - 2025.09.03 - Added progress bar, Simon Skotheimsvik
     Copyright: (c) 2025 Simon Skotheimsvik
     License:   MIT
 #>
@@ -36,7 +37,7 @@ if (-not (Get-MgContext)) {
 
 #region Query Devices
 # Step 1: Get all Windows devices
-$allWindowsDevices = Microsoft.Graph\Get-MgDeviceManagementManagedDevice -Filter "operatingSystem eq 'Windows'" -All
+$allWindowsDevices = Get-MgDeviceManagementManagedDevice -Filter "operatingSystem eq 'Windows'" -All
 # Step 2: Filter locally for Entra ID joined devices (can be heavy in some tenants filtering locally)
 $devices = $allWindowsDevices | Where-Object { $_.deviceEnrollmentType -eq 'windowsAzureADJoin' }
 #endregion
@@ -46,6 +47,11 @@ $deviceReport = @()
 
 $deviceReport = foreach ($device in $devices) {
     $deviceId = $device.Id
+
+    # Progress bar
+    $currentIndex = [array]::IndexOf($devices, $device) + 1
+    $percentComplete = [int](($currentIndex / $devices.Count) * 100)
+    Write-Progress -Activity "Processing devices" -Status "$currentIndex of $($devices.Count)" -PercentComplete $percentComplete
 
     # Query full device object by ID
     # Heavy to run in large environments, but had to be done to get full details
@@ -63,6 +69,8 @@ $deviceReport = foreach ($device in $devices) {
         Mismatch                    = $mismatch
     }
 }
+Write-Progress -Activity "Processing devices" -Completed
+Write-Host "Number of devices processed: $($deviceReport.Count)" -ForegroundColor Cyan
 #endregion
 
 #region Display results
