@@ -13,6 +13,7 @@
     1.0 - (08.11.2022) Script released
     1.1 - (07.07.2023) Adding users with existing licenses to the groups
     1.2 - (13.02.2023) Convert to Microsoft Graph PowerShell SDK V2 module, Simon Skotheimsvik
+    1.3 - (05.09.2025) Fix for UTF8 BOM issue when importing CSV from Microsoft, Simon Skotheimsvik
 
 #>
 
@@ -48,13 +49,25 @@ $DisplayNameTranslations = @{
     "Microsoft 365"                  = 'M365'
     "Office 365"                     = 'O365'
     "Enterprise Mobility + Security" = 'EMS'
+    "Windows 365"                    = 'W365'
 }
 
-# Import Microsoft CSV file with friendly display name and SKU Partnumber
+# Import Microsoft CSV file with friendly display name and SKU Partnumber, https://learn.microsoft.com/en-us/entra/identity/users/licensing-service-plan-reference
 $licenseCsvURL = 'https://download.microsoft.com/download/e/3/e/e3e9faf2-f28b-490a-9ada-c6089a1fc5b0/Product%20names%20and%20service%20plan%20identifiers%20for%20licensing.csv'
- 
+$response = Invoke-WebRequest -Uri $licenseCsvURL
+
+# Decode the byte array as UTF8 text
+$csvText = [System.Text.Encoding]::UTF8.GetString($response.Content)
+
+# Strip BOM if present
+$csvText = $csvText -replace '^\uFEFF',''
+
+# Now parse CSV
+$csv = $csvText | ConvertFrom-Csv
+
+# Build your hashtable
 $skuHashTable = @{}
-(Invoke-WebRequest -Uri $licenseCsvURL).ToString() | ConvertFrom-Csv | ForEach-Object {
+$csv | ForEach-Object {
     $skuHashTable[$_.String_Id] = @{
         "SkuId"         = $_.GUID
         "SkuPartNumber" = $_.String_Id
@@ -66,7 +79,9 @@ $skuHashTable = @{}
 
 #region connect
 Connect-MgGraph -Scopes "Directory.Read.All", "Group.ReadWrite.All"
-Import-Module Microsoft.Graph.Groups
+Import-Module Microsoft.Graph.Beta.Identity.DirectoryManagement
+Import-Module Microsoft.Graph.Users
+Import-Module Microsoft.Graph.Beta.Groups
 #endregion connect
 
 #region script 

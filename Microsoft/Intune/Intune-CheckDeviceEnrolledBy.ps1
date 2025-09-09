@@ -74,11 +74,13 @@ Write-Host "Number of devices processed: $($deviceReport.Count)" -ForegroundColo
 #endregion
 
 #region Display results
+$TotalDevices = $devices.Count
 # Show all devices
 $deviceReport | Out-GridView -Title "Device Report"
 
 # Show only mismatched entries
-$deviceReport | Where-Object { $_.Mismatch -eq "Yes" } | Out-GridView -Title "Mismatched Devices"
+$deviceCount = ($deviceReport | Where-Object { $_.Mismatch -eq "Yes" }).Count
+$deviceReport | Where-Object { $_.Mismatch -eq "Yes" } | Out-GridView -Title "Mismatch on $($deviceCount) of $($TotalDevices) devices"
 
 # Show only devices enrolled by john.doe@contoso.com
 $deviceReport | Where-Object { $_.EnrolledByUserPrincipalName -eq "john.doe@contoso.com" } | Format-Table -AutoSize
