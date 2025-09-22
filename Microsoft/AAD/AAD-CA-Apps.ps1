@@ -15,6 +15,7 @@
     1.1.0 - (29.06.2023) Script updated with Universal Store Service APIs and Web Application
     1.2.0 - (12.02.2024) Convert to Microsoft Graph PowerShell SDK V2 module, Simon Skotheimsvik
     1.2.1 - (11.08.2025) Added the My Staff application ID, Simon Skotheimsvik
+    1.2.2 - (10.09.2025) Added Azure Credential Configuration Endpoint Service application ID, Simon Skotheimsvik
 #>
 
 #region Variables
@@ -26,6 +27,7 @@ $APPIDs = @(
     "45a330b1-b1ec-4cc1-9161-9f03992aa49f"  # Windows Store for Business
     "a4a365df-50f1-4397-bc59-1a1564b8bb9c"  # Microsoft Remote Desktop
     "ba9ff945-a723-4ab5-a977-bd8c9044fe61"  # My Staff
+    "ea890292-c8c8-4433-b5ea-b09d0668e1a6"  # Azure Credential Configuration Endpoint Service. Source: https://nathanmcnulty.com/blog/2025/09/improving-passkey-registration-experiences/
 )
 #endregion Variables
 
@@ -52,3 +54,8 @@ foreach ($ID in $APPIDs) {
     }
 }
 #endregion script
+
+
+#Investigate sign-in logs for a specific app
+$events = Get-MgBetaAuditLogSignIn -Filter "conditionalAccessAudiences/any(i:i eq 'ea890292-c8c8-4433-b5ea-b09d0668e1a6')" -All
+$events | Select-Object appId,appDisplayName,clientAppUsed,resourceDisplayName,resourceId,servicePrincipalId | Group-Object AppDisplayName | Format-List

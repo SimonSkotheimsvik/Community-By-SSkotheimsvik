@@ -12,6 +12,7 @@
                 1.0.0 - 2025.08.11 - Initial version, Simon Skotheimsvik
                 1.0.1 - 2025.08.28 - Better routine for prerequisites, Simon Skotheimsvik
                 1.0.2 - 2025.09.03 - Added progress bar, Simon Skotheimsvik
+                1.0.3 - 2025.09.09 - Added enrollmentProfileName to the report to find DEM accounts used with Autopilot, Simon Skotheimsvik
     Copyright: (c) 2025 Simon Skotheimsvik
     License:   MIT
 #>
@@ -55,7 +56,7 @@ $deviceReport = foreach ($device in $devices) {
 
     # Query full device object by ID
     # Heavy to run in large environments, but had to be done to get full details
-    $uri = "https://graph.microsoft.com/beta/deviceManagement/managedDevices('$deviceId')?`$select=deviceName,userPrincipalName,enrolledByUserPrincipalName"
+    $uri = "https://graph.microsoft.com/beta/deviceManagement/managedDevices('$deviceId')?`$select=deviceName,userPrincipalName,enrolledByUserPrincipalName,enrollmentProfileName"
     $details = Invoke-MgGraphRequest -Method GET -Uri $uri -OutputType PSObject
 
     # Compare UPNs
@@ -66,6 +67,7 @@ $deviceReport = foreach ($device in $devices) {
         DeviceName                  = $details.deviceName
         UserPrincipalName           = $details.userPrincipalName
         EnrolledByUserPrincipalName = $details.enrolledByUserPrincipalName
+        EnrollmentProfileName       = $details.enrollmentProfileName
         Mismatch                    = $mismatch
     }
 }
@@ -83,10 +85,14 @@ $deviceCount = ($deviceReport | Where-Object { $_.Mismatch -eq "Yes" }).Count
 $deviceReport | Where-Object { $_.Mismatch -eq "Yes" } | Out-GridView -Title "Mismatch on $($deviceCount) of $($TotalDevices) devices"
 
 # Show only devices enrolled by john.doe@contoso.com
-$deviceReport | Where-Object { $_.EnrolledByUserPrincipalName -eq "john.doe@contoso.com" } | Format-Table -AutoSize
+$EnrollmentUser = "EnrollmentManager@johnpaul.ie"
+$deviceReport | Where-Object { $_.EnrolledByUserPrincipalName -eq $EnrollmentUser } | Format-Table -AutoSize
+$deviceReport | Where-Object { $_.EnrolledByUserPrincipalName -eq $EnrollmentUser } | Measure
 
 # Show only devices where primary user is john.doe@contoso.com
-$deviceReport | Where-Object { $_.UserPrincipalName -eq "john.doe@contoso.com" } | Format-Table -AutoSize
+$UserPrincipalName = "EnrollmentManager@johnpaul.ie"
+$deviceReport | Where-Object { $_.UserPrincipalName -eq $UserPrincipalName } | Format-Table -AutoSize
+$deviceReport | Where-Object { $_.UserPrincipalName -eq $UserPrincipalName } | Measure
 
 # Show details on named device
 $deviceReport | Where-Object { $_.DeviceName -eq "PC-123456789Z" } | Format-Table -AutoSize
@@ -96,7 +102,7 @@ $deviceReport |
     Group-Object -Property EnrolledByUserPrincipalName |
     Sort-Object -Property Count -Descending |
     Select-Object Name, Count |
-    Out-GridView
+    Out-GridView -Title "Device count by EnrolledByUserPrincipalName"
 
 # Count number of devices enrolled by each user, include the computernames and show users with multiple devices enrolled
 $deviceReport |
@@ -110,5 +116,18 @@ $deviceReport |
             DeviceNames     = ($_.Group | Select-Object -ExpandProperty DeviceName) -join ", "
         }
     } | Out-GridView -Title "Devices Enrolled by User"
+
+# Find all devices enrolled by a specific user, show enrollment profile name to find DEM accounts used with Autopilot
+    $EnrollmentUser = "EnrollmentManager@johnpaul.ie"
+    $deviceReport | Where-Object { $_.EnrolledByUserPrincipalName -eq $EnrollmentUser } | Select-Object DeviceName, EnrolledByUserPrincipalName, EnrollmentProfileName | Out-GridView -Title "Devices enrolled by $EnrollmentUser with enrollment profile name"
+
+# Count number of devices by EnrollmentProfileName where EnrolledByUserPrincipalName is $EnrollmentUser
+    $EnrollmentUser = "EnrollmentManager@johnpaul.ie"
+    $deviceReport |
+        Where-Object { $_.EnrolledByUserPrincipalName -eq $EnrollmentUser } |
+        Group-Object -Property EnrollmentProfileName |
+        Sort-Object -Property Count -Descending |
+        Select-Object Name, Count |
+        Out-GridView -Title "Device count by EnrollmentProfileName for $EnrollmentUser"
 
 #endregion
