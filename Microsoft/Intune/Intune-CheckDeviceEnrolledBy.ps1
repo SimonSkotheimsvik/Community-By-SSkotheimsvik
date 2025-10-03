@@ -85,12 +85,12 @@ $deviceCount = ($deviceReport | Where-Object { $_.Mismatch -eq "Yes" }).Count
 $deviceReport | Where-Object { $_.Mismatch -eq "Yes" } | Out-GridView -Title "Mismatch on $($deviceCount) of $($TotalDevices) devices"
 
 # Show only devices enrolled by john.doe@contoso.com
-$EnrollmentUser = "EnrollmentManager@johnpaul.ie"
+$EnrollmentUser = "john.doe@contoso.com"
 $deviceReport | Where-Object { $_.EnrolledByUserPrincipalName -eq $EnrollmentUser } | Format-Table -AutoSize
 $deviceReport | Where-Object { $_.EnrolledByUserPrincipalName -eq $EnrollmentUser } | Measure
 
 # Show only devices where primary user is john.doe@contoso.com
-$UserPrincipalName = "EnrollmentManager@johnpaul.ie"
+$UserPrincipalName = "john.doe@contoso.com"
 $deviceReport | Where-Object { $_.UserPrincipalName -eq $UserPrincipalName } | Format-Table -AutoSize
 $deviceReport | Where-Object { $_.UserPrincipalName -eq $UserPrincipalName } | Measure
 
@@ -118,11 +118,11 @@ $deviceReport |
     } | Out-GridView -Title "Devices Enrolled by User"
 
 # Find all devices enrolled by a specific user, show enrollment profile name to find DEM accounts used with Autopilot
-    $EnrollmentUser = "EnrollmentManager@johnpaul.ie"
+    $EnrollmentUser = "john.doe@contoso.com"
     $deviceReport | Where-Object { $_.EnrolledByUserPrincipalName -eq $EnrollmentUser } | Select-Object DeviceName, EnrolledByUserPrincipalName, EnrollmentProfileName | Out-GridView -Title "Devices enrolled by $EnrollmentUser with enrollment profile name"
 
 # Count number of devices by EnrollmentProfileName where EnrolledByUserPrincipalName is $EnrollmentUser
-    $EnrollmentUser = "EnrollmentManager@johnpaul.ie"
+    $EnrollmentUser = "john.doe@contoso.com"
     $deviceReport |
         Where-Object { $_.EnrolledByUserPrincipalName -eq $EnrollmentUser } |
         Group-Object -Property EnrollmentProfileName |
