@@ -13,7 +13,7 @@
     defined in Microsoft Purview as defined by Nikki Chapple in her blog
     https://nikkichapple.com/how-to-use-sensitivity-labels-with-your-pdf-files/
     
-    The script can be assigned to users in Microsoft Endpoint Manager.
+    The script can be assigned to users in Microsoft Intune.
     
   .EXAMPLE
     Win11-EnableAdobeAcrobatForMicrosoftSensitivityLabels.ps1 
