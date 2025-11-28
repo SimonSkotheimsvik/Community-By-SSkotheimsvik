@@ -130,4 +130,11 @@ $deviceReport |
         Select-Object Name, Count |
         Out-GridView -Title "Device count by EnrollmentProfileName for $EnrollmentUser"
 
+# Count number of devices by EnrollmentProfileName
+    $deviceReport |
+        Group-Object -Property EnrollmentProfileName |
+        Sort-Object -Property Count -Descending |
+        Select-Object Name, Count |
+        Out-GridView -Title "Device count by EnrollmentProfileName"
+
 #endregion
